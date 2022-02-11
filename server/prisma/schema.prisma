@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model post {
+  id          Int       @id @default(autoincrement())
+  title       String?   @db.VarChar(255)
+  imageUrl    String    @db.VarChar(510)
+  userId      Int
+  dateCreated DateTime  @default(now())
+  dateUpdated DateTime  @default(now())
+  user        user      @relation(fields: [userId], references: [id])
+  comment     comment[]
+
+  @@index([userId], map: "FK_AUTHORID")
+}
+
+model user {
+  id              Int       @id @default(autoincrement())
+  displayName     String    @unique @db.VarChar(255)
+  email           String    @unique @db.VarChar(255)
+  password        String    @db.VarChar(255)
+  profileImageUrl String?   @db.VarChar(510)
+  role            user_role @default(user)
+  dateCreated     DateTime  @default(now())
+  dateUpdated     DateTime  @default(now())
+  comment         comment[]
+  post            post[]
+}
+
+model comment {
+  id          Int      @id @default(autoincrement())
+  content     String   @db.VarChar(510)
+  postId      Int
+  userId      Int
+  dateCreated DateTime @default(now())
+  dateUpdated DateTime @default(now())
+  post        post     @relation(fields: [postId], references: [id])
+  user        user     @relation(fields: [userId], references: [id])
+
+  @@index([postId], map: "FK1_POSTID")
+  @@index([userId], map: "FK2_AUTHORID")
+}
+
+enum user_role {
+  admin
+  user
+}
