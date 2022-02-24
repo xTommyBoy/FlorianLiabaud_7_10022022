@@ -11,10 +11,7 @@ export default async function (fastify, opts) {
     credentials: true,
   })
 
-  fastify.register(fastifyCookie);
-
-
-  
+  fastify.register(fastifyCookie)
 
   const envSchema = {
     type: 'object',
@@ -33,23 +30,15 @@ export default async function (fastify, opts) {
     confKey: 'config',
   })
 
-
   const __dirname = dirname(fileURLToPath(import.meta.url))
-  // This loads all plugins defined in plugins
-  // those should be support plugins that are reused
-  // through your application
   fastify.register(AutoLoad, {
     dir: path.join(__dirname, 'plugins'),
     options: Object.assign({}, opts),
   })
 
-  // This loads all plugins defined in routes
-  // define your routes in one of these
   fastify.register(AutoLoad, {
     dir: path.join(__dirname, 'routes'),
     dirNameRoutePrefix: false,
     options: Object.assign({}, opts),
   })
 }
-
-

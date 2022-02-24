@@ -1,5 +1,3 @@
-import { sleep } from '/utils/usefullFunctions'
-
 export async function connectUser(payload) {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/auth/login`,
@@ -21,16 +19,4 @@ export async function connectUser(payload) {
   }
 
   return await response.json()
-}
-
-export async function connectDemoUser(payload) {
-  await sleep(500)
-
-  if (payload.email === 'test@gmail.com' && payload.password === 'test123123') {
-    return {
-      email: payload.email,
-    }
-  } else {
-    throw new Error('Mauvais mot de passe ou adresse mail')
-  }
 }

@@ -20,7 +20,6 @@ function MyApp({ Component, pageProps }) {
     <div>
       <Head>
         <title>Groupomania</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <ConnectedUserContext.Provider
         value={{ connectedUser, setConnectedUser }}

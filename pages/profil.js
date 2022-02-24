@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { XCircleIcon, CheckCircleIcon } from '@heroicons/react/solid'
@@ -29,7 +28,7 @@ export default function Profil() {
       const updatedUser = await updateUser(email, name, profileImage)
       setConnectedUser(updatedUser)
       setIsUserUpdating(false)
-      setSuccessMessage('Updated successfully')
+      setSuccessMessage('Mise à jour effectuée avec succès')
     } catch (error) {
       setIsUserUpdating(false)
       setSuccessMessage(null)
@@ -37,21 +36,21 @@ export default function Profil() {
     }
   }
 
-  const uploadedImage = React.useRef(null)
-  const imageUploader = React.useRef(null)
+  // const uploadedImage = React.useRef(null)
+  // const imageUploader = React.useRef(null)
 
-  const handleImageUpload = (e) => {
-    const [file] = e.target.files
-    if (file) {
-      const reader = new FileReader()
-      const { current } = uploadedImage
-      current.file = file
-      reader.onload = (e) => {
-        current.src = e.target.result
-      }
-      reader.readAsDataURL(file)
-    }
-  }
+  // const handleImageUpload = (e) => {
+  //   const [file] = e.target.files
+  //   if (file) {
+  //     const reader = new FileReader()
+  //     const { current } = uploadedImage
+  //     current.file = file
+  //     reader.onload = (e) => {
+  //       current.src = e.target.result
+  //     }
+  //     reader.readAsDataURL(file)
+  //   }
+  // }
 
   return (
     <main className="flex flex-col text-sm font-bold rounded-lg w-full max-w-3xl py-10 mx-auto px-6">
@@ -62,35 +61,50 @@ export default function Profil() {
         <div className="flex justify-between">
           <div className="flex items-center">
             <img
-              ref={uploadedImage}
+              // ref={uploadedImage}
               referrerPolicy="no-referrer"
-              src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg"
+              src={
+                connectedUser?.profileImageUrl === ''
+                  ? 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg'
+                  : connectedUser.profileImageUrl
+              }
               alt=""
               className="h-24 w-24 rounded-full border-2 border-gray-900"
             />
             <span className="text-xl ml-4">{connectedUser?.name || ''}</span>
           </div>
-          <div
+          {/* <div
             className="my-auto"
-            onClick={() => imageUploader.current.click()}
+            // onClick={() => imageUploader.current.click()}
           >
             <button
               className="mr-4 justify-center w-full px-4 py-2 font-medium text-white transition duration-200 ease-in-out border border-transparent rounded-md shadow-sm cursor-pointer bg-blue-800 hover:bg-blue-900 focus:outline-none"
               ref={filePickerRef}
+              {...register('profileImage', { required: false })}
             >
               Modifier sa photo de profil
             </button>
             <input
               type="file"
               accept="image/*"
-              ref={imageUploader}
+              // ref={imageUploader}
               hidden
-              onChange={handleImageUpload}
+              // onChange={handleImageUpload}
             />
-          </div>
+          </div> */}
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col mt-8">
           <div className="flex flex-col">
+            <label className="text-sm">URL de l&apos;image de profil</label>
+            <input
+              className={`block w-full rounded-md mt-1 ${
+                errors.profileImage ? 'invalid-input' : 'valid-input'
+              } input`}
+              type="text"
+              {...register('profileImage', { required: false })}
+            />
+          </div>
+          <div className="flex flex-col mt-4">
             <label className="text-sm">NOM</label>
             <input
               autoFocus

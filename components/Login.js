@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { useConnectedUserContext } from '/pages/_app'
-import { connectUser, connectDemoUser } from '/api/connectUser'
+import { connectUser } from '/api/connectUser'
 import FormButton from '/components/FormButton'
 
 export default function Login() {
@@ -21,13 +21,7 @@ export default function Login() {
       let user
       setRequestSending(true)
       setErrorMessage(null)
-
-      if (process.env.NEXT_PUBLIC_DEMO_MODE) {
-        user = await connectDemoUser({ email, password })
-      } else {
-        user = await connectUser({ email, password })
-      }
-
+      user = await connectUser({ email, password })
       setConnectedUser(user)
       setRequestSending(false)
       router.push('/feed')

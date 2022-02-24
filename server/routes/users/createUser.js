@@ -45,7 +45,7 @@ export default async function (fastify) {
       })
       .setCookie('connectedUser', JSON.stringify(returnedUser), {
         domain: 'localhost',
-        path: '/feed',
+        path: '/',
         secure: true,
         httpOnly: false,
         sameSite: true,

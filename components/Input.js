@@ -40,6 +40,7 @@ function Input() {
 
   return (
     <div
+      onSubmit={handleSubmit(onSubmit)}
       className={`border-b border-gray-700 p-3 flex space-x-3 scrollbar-hide ${
         loading && 'opacity-60'
       }`}
