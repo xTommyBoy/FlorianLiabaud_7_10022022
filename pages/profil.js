@@ -66,7 +66,7 @@ export default function Profil() {
               src={
                 connectedUser?.profileImageUrl === ''
                   ? 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg'
-                  : connectedUser.profileImageUrl
+                  : connectedUser?.profileImageUrl
               }
               alt=""
               className="h-24 w-24 rounded-full border-2 border-gray-900"
@@ -95,19 +95,21 @@ export default function Profil() {
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col mt-8">
           <div className="flex flex-col">
-            <label className="text-sm">URL de l&apos;image de profil</label>
+            <label className="text-sm">
+              URL de l&apos;image de profil &#40; jpg, png, gif &#41;
+            </label>
             <input
               className={`block w-full rounded-md mt-1 ${
                 errors.profileImage ? 'invalid-input' : 'valid-input'
               } input`}
               type="text"
+              placeholder="https://example.com/image.png"
               {...register('profileImage', { required: false })}
             />
           </div>
           <div className="flex flex-col mt-4">
             <label className="text-sm">NOM</label>
             <input
-              autoFocus
               defaultValue={connectedUser?.name || ''}
               className={`block w-full rounded-md mt-1 ${
                 errors.name ? 'invalid-input' : 'valid-input'
@@ -145,10 +147,13 @@ export default function Profil() {
               className={`block w-full rounded-md mt-1 ${
                 errors.password ? 'invalid-input' : 'valid-input'
               } input`}
-              type="text"
+              type="password"
               placeholder="***********"
-              {...register('password', { required: false })}
+              {...register('password', { required: true })}
             />
+            {errors.password && (
+              <p className="text-red-500">Un mot de passe est requis</p>
+            )}
           </div>
 
           <div className="flex items-center mt-4">

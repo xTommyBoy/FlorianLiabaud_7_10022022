@@ -20,13 +20,13 @@ function Post({ post, setIsDialogOpen, setCurrentPostId }) {
           <img
             referrerPolicy="no-referrer"
             className="w-11 h-11 rounded-full mr-4"
-            src={connectedUser.profileImageUrl} // TODO: use user's profile image
+            src={post.user.profileImageUrl} // TODO: use user's profile image
             alt=""
           />
           <div className="space-y-2 w-full">
             <div className="inline-block">
               <h4 className="font-bold inline-block text-sm sm:text-base hover:underline ">
-                {connectedUser.displayName}
+                {post.user.displayName}
               </h4>{' '}
               ·{' '}
               <span className="text-sm text-gray-500">
@@ -49,7 +49,8 @@ function Post({ post, setIsDialogOpen, setCurrentPostId }) {
               alt=""
             />
           </div>
-          {connectedUser.role === 'admin' || connectedUser.id === post.user?.id}
+          {connectedUser?.role === 'admin' ||
+            connectedUser?.id === post.user?.id}
         </div>
 
         <div className="text-[#6e767d] flex justify-around w-10/12 mx-auto mt-2">

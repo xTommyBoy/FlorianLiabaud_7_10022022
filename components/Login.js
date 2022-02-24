@@ -59,6 +59,7 @@ export default function Login() {
               errors.password ? 'invalid-input' : 'valid-input'
             } block w-full mt-1 input`}
             type="password"
+            placeholder="***********"
             {...register('password', { required: true })}
           />
           {errors.password && (
