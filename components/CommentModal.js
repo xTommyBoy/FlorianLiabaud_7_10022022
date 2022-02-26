@@ -1,22 +1,15 @@
 import { Dialog, Transition } from '@headlessui/react'
+import { useState } from 'react'
 import { Fragment } from 'react'
 import Comment from './Comment'
 import CommentInput from './CommentInput'
 import { XIcon } from '@heroicons/react/solid'
 
-export default function MyDialog({
-  isOpen,
-  setIsOpen,
-  comments,
-  currentPostId,
-  commentsEndpoint,
-}) {
+export default function CommentModal({comments, post, parentEvent}) {
+  let [isOpen, setIsOpen] = useState(true)
   function closeModal() {
     setIsOpen(false)
-  }
-
-  function openModal() {
-    setIsOpen(true)
+    parentEvent()
   }
 
   return (
@@ -25,7 +18,7 @@ export default function MyDialog({
         <Dialog
           as="div"
           className="fixed inset-0 z-10 overflow-y-auto"
-          onClose={closeModal}
+          onClose={() => setIsOpen(false)}
         >
           <div className="min-h-screen text-center">
             <Transition.Child
@@ -65,8 +58,7 @@ export default function MyDialog({
                   </Dialog.Title>
                   <Comment comments={comments} />
                   <CommentInput
-                    currentPostId={currentPostId}
-                    commentsEndpoint={commentsEndpoint}
+                    currentPostId={post.id}
                   />
                   <button
                     type="button"

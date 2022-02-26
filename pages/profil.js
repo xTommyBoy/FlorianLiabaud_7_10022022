@@ -21,12 +21,12 @@ export default function Profil() {
   const [successMessage, setSuccessMessage] = useState(null)
   const [isUserUpdating, setIsUserUpdating] = useState(false)
 
-  async function onSubmit({ email, name, profileImage }) {
+  async function onSubmit({ email, name, profileImage, password }) {
     try {
       setErrorMessage(null)
       setSuccessMessage(null)
       setIsUserUpdating(true)
-      const updatedUser = await updateUser(email, name, profileImage)
+      const updatedUser = await updateUser(email, name, profileImage, password)
       setConnectedUser(updatedUser)
       setIsUserUpdating(false)
       setSuccessMessage('Mise à jour effectuée avec succès')

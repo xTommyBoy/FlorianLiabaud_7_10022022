@@ -5,13 +5,9 @@ import Post from '../components/Post'
 import Link from 'next/link'
 
 export default function Feed() {
-  const [currentPostId, setCurrentPostId] = useState(14)
   const { data, error } = useSWR(
     `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/post`
   )
-  const commentsEndpoint = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/comments/${currentPostId}`
-  const { data: currentComments, error: commentsError } =
-    useSWR(commentsEndpoint)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   return (
@@ -33,7 +29,6 @@ export default function Feed() {
             key={post.id}
             post={post}
             setIsDialogOpen={setIsDialogOpen}
-            setCurrentPostId={setCurrentPostId}
           />
         ))}
       </div>

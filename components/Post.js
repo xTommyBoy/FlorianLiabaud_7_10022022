@@ -5,16 +5,37 @@ import { useConnectedUserContext } from '/pages/_app'
 import {
   ChatIcon,
   TrashIcon,
-  SwitchHorizontalIcon,
+  SwitchHorizontalIcon
 } from '@heroicons/react/outline'
 import { useRouter } from 'next/router'
 import deletePost from '../api/deletePost'
+import CommentModal from '../components/CommentModal'
 import { mutate } from 'swr'
 
-function Post({ post, setIsDialogOpen, setCurrentPostId }) {
+function Post({ post }) {
   const { connectedUser, setConnectedUser } = useConnectedUserContext()
-  const [showUpdateUi, setShowUpdateUi] = useState(false)
   const router = useRouter()
+  let [comments, setComments] = useState([])
+  let [isOpen, setIsOpen] = useState(false)
+
+  async function getComments(){
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/comments/${post.id}`,
+      {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-type': 'application/json',
+        },
+      }
+    )
+    setComments(response)
+    setIsOpen(true)
+  }
+
+  function closeModal() {
+    setIsOpen(false)
+  }
 
   async function deleteAction() {
     try {
@@ -24,6 +45,7 @@ function Post({ post, setIsDialogOpen, setCurrentPostId }) {
       alert(error.message)
     }
   }
+
 
   return (
     <>
@@ -78,8 +100,9 @@ function Post({ post, setIsDialogOpen, setCurrentPostId }) {
             <button
               className="icon group-hover:bg-[#1d9bf0] group-hover:bg-opacity-10 "
               onClick={() => {
-                setIsDialogOpen(true)
-                setCurrentPostId(post.id)
+                getComments(),
+                isOpen = true
+
               }}
             >
               <span className="group-hover:text-[#1d9bf0] text-sm mr-1">
@@ -101,6 +124,7 @@ function Post({ post, setIsDialogOpen, setCurrentPostId }) {
               )}
             </div>
           </div>
+          { isOpen ? < CommentModal parentEvent={closeModal} comments={comments} post={post}/> : ''  }
         </div>
       </div>
     </>
