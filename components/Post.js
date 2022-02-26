@@ -1,25 +1,45 @@
 import { useState } from 'react'
-import { ChatAltIcon } from '@heroicons/react/solid'
 import dayjs from 'dayjs'
 import 'dayjs/locale/fr'
 import { useConnectedUserContext } from '/pages/_app'
-import FormButton from './FormButton'
-import { XCircleIcon, XIcon } from '@heroicons/react/solid'
-import { useForm } from 'react-hook-form'
-import { updatePost } from '/api/updatePost'
-import { ChatIcon, TrashIcon } from '@heroicons/react/outline'
+import {
+  ChatIcon,
+  TrashIcon,
+  SwitchHorizontalIcon,
+} from '@heroicons/react/outline'
+import { useRouter } from 'next/router'
+import deletePost from '../api/deletePost'
+import { mutate } from 'swr'
 
 function Post({ post, setIsDialogOpen, setCurrentPostId }) {
   const { connectedUser, setConnectedUser } = useConnectedUserContext()
   const [showUpdateUi, setShowUpdateUi] = useState(false)
+  const router = useRouter()
+
+  async function deleteAction() {
+    try {
+      await deletePost(post.id)
+      mutate(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/post`)
+    } catch (error) {
+      alert(error.message)
+    }
+  }
 
   return (
     <>
       <div className="mt-4 p-3 border-b border-gray-700">
         <div className="flex space-x-3 ">
           <img
+            onClick={
+              () =>
+                connectedUser.id === post.user.id
+                  ? router.push('/profil')
+                  : router.push('/feed#' + post.user.id)
+              // router.push('/profil/[id]', `/profil/${post.user.id}`)
+              // TODO : créer une route pour le profil des autres users
+            }
             referrerPolicy="no-referrer"
-            className="w-11 h-11 rounded-full mr-4"
+            className="w-11 h-11 rounded-full mr-4 border-2 border-gray-900 cursor-pointer"
             src={post.user.profileImageUrl} // TODO: use user's profile image
             alt=""
           />
@@ -55,126 +75,35 @@ function Post({ post, setIsDialogOpen, setCurrentPostId }) {
 
         <div className="text-[#6e767d] flex justify-around w-10/12 mx-auto mt-2">
           <div className="flex items-center space-x-1 group">
-            <div className="icon group-hover:bg-[#1d9bf0] group-hover:bg-opacity-10">
+            <button
+              className="icon group-hover:bg-[#1d9bf0] group-hover:bg-opacity-10 "
+              onClick={() => {
+                setIsDialogOpen(true)
+                setCurrentPostId(post.id)
+              }}
+            >
+              <span className="group-hover:text-[#1d9bf0] text-sm mr-1">
+                {post._count.comment}
+              </span>
               <ChatIcon className="h-5 group-hover:text-[#1d9bf0]" />
-            </div>
-            <span className="group-hover:text-[#1d9bf0] text-sm"></span>
+            </button>
           </div>
 
           <div className="flex items-center space-x-1 group">
             <div className="icon group-hover:bg-red-600/10">
-              <TrashIcon className="h-5 group-hover:text-red-600" />
+              {connectedUser?.id === post.user?.id ? (
+                <TrashIcon
+                  onClick={deleteAction}
+                  className="h-5 group-hover:text-red-600"
+                />
+              ) : (
+                <SwitchHorizontalIcon className="h-5 group-hover:text-green-500" />
+              )}
             </div>
           </div>
         </div>
       </div>
-
-      {showUpdateUi && (
-        <PostUpdate post={post} setShowUpdateUi={setShowUpdateUi} />
-      )}
     </>
-  )
-}
-
-function PostUpdate({ post, setShowUpdateUi }) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm()
-  const [postIsUpdating, setPostIsUpdating] = useState(false)
-  const [errorMessage, setErrorMessage] = useState(null)
-  const { connectedUser, setConnectedUser } = useConnectedUserContext()
-
-  async function onSubmit(data) {
-    try {
-      setErrorMessage(null)
-      setPostIsUpdating(true)
-      await updatePost(
-        data.title,
-        data.externalGifURl,
-        connectedUser.id,
-        post.id
-      )
-      setPostIsUpdating(false)
-      setShowUpdateUi(false)
-    } catch (error) {
-      setErrorMessage(error.message)
-      setPostIsUpdating(false)
-    }
-  }
-
-  return (
-    <article className="absolute inset-0 px-4 py-6 bg-white sm:p-6 bg-opacity-95">
-      <button
-        type="button"
-        className="absolute flex items-center justify-center w-8 h-8 bg-gray-200 rounded right-4 sm:right-6 top-6"
-        onClick={() => {
-          setShowUpdateUi(false)
-        }}
-      >
-        <XIcon className="w-4 h-4" />
-      </button>
-      <h2 className="section-title">Modifier la post</h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
-        <div className="flex flex-col">
-          <label className="text-sm">Titre de la post</label>
-          <input
-            className={`block w-full mt-1 ${
-              errors.externalGifURl ? 'invalid-input' : 'valid-input'
-            } input`}
-            type="text"
-            defaultValue={post.title}
-            {...register('title', { required: true })}
-          />
-          {errors.title && (
-            <p className="text-red-500">Le titre doit être renseigné !</p>
-          )}
-        </div>
-        <div className="flex flex-col mt-4">
-          <label className="text-sm">Lien du GIF ou de l'image</label>
-          <div className="flex mt-1 rounded-md shadow-sm">
-            <input
-              type="text"
-              defaultValue={post.imageUrl}
-              name="company-website"
-              id="company-website"
-              className={`flex-1 block w-full min-w-0 px-3 py-2 rounded-md placeholder-gray-400 ${
-                errors.externalGifURl
-                  ? 'border-red-300 focus:border-red-400 placeholder-red-300 focus:ring-red-200'
-                  : 'valid-input'
-              } focus:ring focus:ring-opacity-50`}
-              placeholder="https://www.example.com"
-              {...register('externalGifURl', { required: true })}
-            />
-          </div>
-          {errors.externalGifURl && (
-            <p className="text-red-500">Le lien doit être renseigné !</p>
-          )}
-        </div>
-        <div className="flex items-center mt-4">
-          <FormButton loading={postIsUpdating} text="Modifier le post" />
-        </div>
-      </form>
-
-      {errorMessage && (
-        <div className="p-4 mt-4 rounded-md bg-red-50">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <XCircleIcon
-                className="w-5 h-5 text-red-400"
-                aria-hidden="true"
-              />
-            </div>
-            <div className="ml-3">
-              <h3 className="text-sm font-medium text-red-800">
-                {errorMessage}
-              </h3>
-            </div>
-          </div>
-        </div>
-      )}
-    </article>
   )
 }
 

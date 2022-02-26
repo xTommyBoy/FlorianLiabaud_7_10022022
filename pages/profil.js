@@ -5,6 +5,7 @@ import { XCircleIcon, CheckCircleIcon } from '@heroicons/react/solid'
 import { useConnectedUserContext } from '/pages/_app'
 import FormButton from '/components/FormButton'
 import updateUser from '/api/updateUser'
+import DeleteButton from '../components/DeleteButton'
 
 export default function Profil() {
   const {
@@ -52,6 +53,8 @@ export default function Profil() {
   //   }
   // }
 
+  const src = connectedUser?.profileImageUrl
+
   return (
     <main className="flex flex-col text-sm font-bold rounded-lg w-full max-w-3xl py-10 mx-auto px-6">
       <section className="flex border-2 border-gray-900 flex-col w-full px-4 py-6 sm:p-6 rounded-lg">
@@ -60,17 +63,14 @@ export default function Profil() {
         </h1>
         <div className="flex justify-between">
           <div className="flex items-center">
-            <img
-              // ref={uploadedImage}
-              referrerPolicy="no-referrer"
-              src={
-                connectedUser?.profileImageUrl === ''
-                  ? 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg'
-                  : connectedUser?.profileImageUrl
-              }
-              alt=""
-              className="h-24 w-24 rounded-full border-2 border-gray-900"
-            />
+            {src && (
+              <img
+                // ref={uploadedImage}
+                src={connectedUser?.profileImageUrl}
+                alt="profile"
+                className="h-24 w-24 rounded-full border-2 border-gray-900"
+              />
+            )}
             <span className="text-xl ml-4">{connectedUser?.name || ''}</span>
           </div>
           {/* <div
@@ -160,6 +160,9 @@ export default function Profil() {
             <FormButton text="Mettre à jour" loading={isUserUpdating} />
           </div>
         </form>
+        <div className="flex items-center mt-6">
+          <DeleteButton text="Supprimer le compte" />
+        </div>
 
         {errorMessage && (
           <div className="p-4 mt-4 rounded-md bg-red-50">

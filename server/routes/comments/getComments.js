@@ -8,9 +8,9 @@ export default async function (fastify) {
   })
 
   async function handler(request) {
-    const commentsOnPost = await fastify.prisma.comment.findMany({
+    const comments = await fastify.prisma.comment.findMany({
       where: {
-        postId: parseInt(request.params.publicationId, 10),
+        postId: parseInt(request.params.postId, 10),
       },
       select: {
         id: true,
@@ -28,7 +28,7 @@ export default async function (fastify) {
       orderBy: [{ id: 'asc' }],
     })
 
-    return commentsOnPost
+    return comments
   }
 }
 

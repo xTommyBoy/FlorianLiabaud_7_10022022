@@ -1,11 +1,5 @@
-import { sleep } from '/utils/usefullFunctions'
-
 export default async function fetcher(url) {
   console.log(url)
-  if (process.env.NEXT_PUBLIC_DEMO_MODE) {
-    await sleep(500)
-    url = url + '.json'
-  }
 
   const response = await fetch(url, {
     credentials: 'include',

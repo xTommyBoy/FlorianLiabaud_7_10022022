@@ -1,7 +1,7 @@
 export default async function (fastify) {
   fastify.route({
     method: 'POST',
-    url: '/comments',
+    url: '/comments/',
     schema: schema,
     preValidation: [fastify.authenticate],
     handler: handler,

@@ -48,7 +48,9 @@ export default function NewPost() {
             )}
           </div>
           <div className="flex flex-col mt-4">
-            <label className="text-sm">Lien du GIF ou de l'image</label>
+            <label className="text-sm">
+              URL de l&apos;image de profil &#40; jpg, png, gif &#41;
+            </label>
             <div className="flex mt-1 rounded-md shadow-sm">
               <input
                 type="text"
@@ -59,8 +61,8 @@ export default function NewPost() {
                     ? 'border-red-300 focus:border-red-400 placeholder-red-300 focus:ring-red-200'
                     : 'valid-input'
                 } focus:ring focus:ring-opacity-50`}
-                placeholder="https://www.example.com"
-                {...register('externalGifURl', { required: true })}
+                placeholder="https://example.com/image.png"
+                {...register('externalGifURl', { required: false })}
               />
             </div>
             {errors.externalGifURl && (
