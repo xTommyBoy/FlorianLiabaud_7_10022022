@@ -1,5 +1,4 @@
-import { compareSync } from "bcrypt"
-import { hashSync } from "bcrypt"
+import { compareSync } from 'bcrypt'
 
 export default async function (fastify) {
   fastify.route({
@@ -27,10 +26,10 @@ export default async function (fastify) {
 
     if (!user) throw fastify.httpErrors.unauthorized('Utilisateur non trouvé')
 
-    const token = await reply.jwtSign({role: user.role, userId: user.id })
+    const token = await reply.jwtSign({ role: user.role, userId: user.id })
 
     if (!compareSync(password, user.password))
-     throw fastify.httpErrors.unauthorized('Mot de passe Incorrect !')
+      throw fastify.httpErrors.unauthorized('Mot de passe Incorrect !')
 
     const updatedUser = await fastify.prisma.user.update({
       where: {

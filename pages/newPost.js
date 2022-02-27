@@ -30,8 +30,8 @@ export default function NewPost() {
   }
 
   return (
-    <main className="flex flex-col w-full max-w-3xl py-10 mx-auto sm:px-6">
-      <section className="flex flex-col w-full px-4 py-6 border border-gray-900 sm:p-6 sm:rounded-lg">
+    <main className="flex flex-col w-full max-w-[90%] md:max-w-3xl py-10 mx-auto sm:px-6">
+      <section className="flex flex-col w-full px-4 py-6 border border-gray-900 sm:p-6 rounded-lg">
         <h1 className="mb-8 text-2xl font-bold">Faire un post</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
           <div className="flex flex-col">

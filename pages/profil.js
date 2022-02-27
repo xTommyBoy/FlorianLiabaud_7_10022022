@@ -6,6 +6,7 @@ import { useConnectedUserContext } from '/pages/_app'
 import FormButton from '/components/FormButton'
 import updateUser from '/api/updateUser'
 import DeleteButton from '../components/DeleteButton'
+import deleteUser from '../api/deleteUser'
 
 export default function Profil() {
   const {
@@ -37,21 +38,14 @@ export default function Profil() {
     }
   }
 
-  // const uploadedImage = React.useRef(null)
-  // const imageUploader = React.useRef(null)
-
-  // const handleImageUpload = (e) => {
-  //   const [file] = e.target.files
-  //   if (file) {
-  //     const reader = new FileReader()
-  //     const { current } = uploadedImage
-  //     current.file = file
-  //     reader.onload = (e) => {
-  //       current.src = e.target.result
-  //     }
-  //     reader.readAsDataURL(file)
-  //   }
-  // }
+  async function deleteAction() {
+    try {
+      await deleteUser(user.id)
+      mutate(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/users/${user.id}`)
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
 
   const src = connectedUser?.profileImageUrl
 
@@ -65,33 +59,14 @@ export default function Profil() {
           <div className="flex items-center">
             {src && (
               <img
-                // ref={uploadedImage}
-                src={connectedUser?.profileImageUrl}
+                src={src}
                 alt="profile"
                 className="h-24 w-24 rounded-full border-2 border-gray-900"
               />
             )}
+
             <span className="text-xl ml-4">{connectedUser?.name || ''}</span>
           </div>
-          {/* <div
-            className="my-auto"
-            // onClick={() => imageUploader.current.click()}
-          >
-            <button
-              className="mr-4 justify-center w-full px-4 py-2 font-medium text-white transition duration-200 ease-in-out border border-transparent rounded-md shadow-sm cursor-pointer bg-blue-800 hover:bg-blue-900 focus:outline-none"
-              ref={filePickerRef}
-              {...register('profileImage', { required: false })}
-            >
-              Modifier sa photo de profil
-            </button>
-            <input
-              type="file"
-              accept="image/*"
-              // ref={imageUploader}
-              hidden
-              // onChange={handleImageUpload}
-            />
-          </div> */}
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col mt-8">
           <div className="flex flex-col">
@@ -160,7 +135,7 @@ export default function Profil() {
             <FormButton text="Mettre à jour" loading={isUserUpdating} />
           </div>
         </form>
-        <div className="flex items-center mt-6">
+        <div className="flex items-center mt-6" onClick={deleteAction}>
           <DeleteButton text="Supprimer le compte" />
         </div>
 

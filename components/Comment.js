@@ -18,7 +18,7 @@ export default function Comments({ comments }) {
       </div>
     )
   } else {
-    return <p>Pas encore de commentaires</p>
+    return null
   }
 }
 
@@ -28,7 +28,7 @@ function Comment({ displayName, content, image, dateCreated }) {
       <div className="flex-shrink-0 mr-4">
         <img
           className="w-10 h-10 rounded-full"
-          src={image === '' ? '/images/default-profil-image.svg' : image}
+          src={image}
           height="40"
           width="40"
           alt=""

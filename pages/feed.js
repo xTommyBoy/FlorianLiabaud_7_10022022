@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import useSWR from 'swr'
-import Input from '../components/Input'
 import Post from '../components/Post'
 import Link from 'next/link'
 
@@ -12,7 +11,7 @@ export default function Feed() {
 
   return (
     <div className="flex-grow border-l border-t min-h-[100vh] border-r border-black max-w-3xl raw1:ml-[73px] xl:ml-[370px]">
-      <div className=" items-center sm:justify-between py-2 px-3 sticky top-0 z-50 border-b border-black bg-white">
+      <div className=" items-center sm:justify-between py-2 px-3 sticky top-0  border-b border-black backdrop-filter backdrop-blur ">
         <h2 className="text-lg sm:text-xl font-bold pb-2 border-b border-black">
           Accueil
         </h2>
@@ -22,14 +21,9 @@ export default function Feed() {
           </button>
         </Link>
       </div>
-      {/* <Input /> */}
       <div className="pb-72">
         {data?.map((post) => (
-          <Post
-            key={post.id}
-            post={post}
-            setIsDialogOpen={setIsDialogOpen}
-          />
+          <Post key={post.id} post={post} setIsDialogOpen={setIsDialogOpen} />
         ))}
       </div>
     </div>

@@ -1,4 +1,9 @@
-export default async function updateUser(email, displayName, profileImageUrl, password) {
+export default async function updateUser(
+  email,
+  displayName,
+  profileImageUrl,
+  password
+) {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/users`,
     {
@@ -8,7 +13,7 @@ export default async function updateUser(email, displayName, profileImageUrl, pa
         email: email,
         displayName: displayName,
         profileImageUrl: profileImageUrl === '' ? null : profileImageUrl,
-        password: password
+        password: password,
       }),
       headers: {
         'Content-Type': 'application/json',
