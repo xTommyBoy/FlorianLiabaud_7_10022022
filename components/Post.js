@@ -17,6 +17,7 @@ function Post({ post }) {
   const router = useRouter()
   let [comments, setComments] = useState([])
   let [isOpen, setIsOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   async function getComments() {
     const response = await fetch(
@@ -29,7 +30,8 @@ function Post({ post }) {
         },
       }
     )
-    setComments(response)
+    const responseComment = await response.json()
+    setComments(responseComment)
     setIsOpen(true)
   }
 
@@ -39,6 +41,8 @@ function Post({ post }) {
 
   async function deleteAction() {
     try {
+      if (loading) return
+      setLoading(true)
       await deletePost(post.id)
       mutate(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/post`)
     } catch (error) {
@@ -58,7 +62,11 @@ function Post({ post }) {
 
   return (
     <>
-      <div className="mt-4 p-3 border-b border-gray-700">
+      <div
+        className={`mt-4 p-3 border-b border-gray-700 ${
+          loading && 'opacity-60'
+        }`}
+      >
         <div className="flex space-x-3 ">
           {connectedUser?.role === 'admin' ||
           connectedUser?.id === post.user?.id ? (
@@ -119,6 +127,7 @@ function Post({ post }) {
               className="bg-gray-50 rounded-xl object-contain max-h-[25rem] cursor-pointer"
               src={post.imageUrl}
               alt=""
+              title="Cliquez pour copier le lien de l'image"
               onClick={copyUrl}
             />
             <div className="text-[#6e767d] flex justify-between sm:justify-around sm:space-x-40 w-[80%] mx-auto mt-2">
@@ -128,6 +137,7 @@ function Post({ post }) {
                   onClick={() => {
                     getComments(), (isOpen = true)
                   }}
+                  title="Commentaires"
                 >
                   <ChatIcon className="h-5 group-hover:text-[#1d9bf0]" />
                   <span className="group-hover:text-[#1d9bf0] text-sm mr-1">
@@ -137,20 +147,24 @@ function Post({ post }) {
               </div>
 
               <div className="flex items-center space-x-1 group">
-                <div className="icon group-hover:bg-red-600/10">
-                  {connectedUser?.role === 'admin' ||
-                  connectedUser?.id === post.user?.id ? (
-                    <TrashIcon
-                      onClick={deleteAction}
-                      className="h-5 group-hover:text-red-600"
-                    />
-                  ) : (
-                    <SwitchHorizontalIcon
-                      className="h-5 group-hover:text-green-500"
-                      onClick={copyPostContent}
-                    />
-                  )}
-                </div>
+                {connectedUser?.role === 'admin' ||
+                connectedUser?.id === post.user?.id ? (
+                  <div
+                    className="icon group-hover:bg-red-600/10"
+                    title="Supprimer le post"
+                    onClick={deleteAction}
+                  >
+                    <TrashIcon className="h-5 group-hover:text-red-600" />
+                  </div>
+                ) : (
+                  <div
+                    className="icon "
+                    title="Copier le contenu du post"
+                    onClick={copyPostContent}
+                  >
+                    <SwitchHorizontalIcon className="h-5 group-hover:text-green-500" />
+                  </div>
+                )}
               </div>
               {isOpen ? (
                 <CommentModal

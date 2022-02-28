@@ -7,7 +7,7 @@ export default function Example() {
   const tabNames = ['Se connecter', 'Créer un compte']
 
   return (
-    <div className="w-full">
+    <div className="w-[90%]">
       <Tab.Group>
         <Tab.List className="">
           {tabNames.map((name, index) => (

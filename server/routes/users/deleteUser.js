@@ -10,27 +10,18 @@ export default async function (fastify) {
   async function handler(request) {
     const id = request.params.userId
     const { userId, role } = fastify.jwt.decode(request.cookies.token)
-
-    const userDelete = await fastify.prisma.post.findUnique({
-      where: {
-        id: user.id,
-      },
-      include: {
-        user: true,
-      },
-    })
-
-    if (userDelete === userId || role === 'admin') {
-      const deleteUser = fastify.prisma.user.delete({
+    console.log('====================================')
+    console.log('userId: ', id, 'role :', role)
+    console.log('====================================')
+    if (id === userId || role === 'admin') {
+      await fastify.prisma.user.delete({
         where: {
           id: userId,
         },
       })
-
-      await fastify.prisma.$transaction(deleteUser)
-
-      return { message: 'User successfully deleted' }
     }
+
+    return { message: 'User successfully deleted' }
   }
 }
 

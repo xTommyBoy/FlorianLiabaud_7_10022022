@@ -6,7 +6,7 @@ function Sidebar() {
   const src = connectedUser?.profileImageUrl
 
   return (
-    <div className="hidden raw1:flex flex-col items-center xl:items-start xl:w-[340px] p-2 fixed h-full">
+    <div className="hidden raw1:flex flex-col items-center xl:items-start xl:w-[340px] p-2 fixed h-full z-99">
       <div className="space-y-5 mt-48 raw2:self-end self-center ">
         <Link href="/feed" passHref>
           <a className="hidden sm:flex items-center hover:text-[#1d9bf0] transition duration-200 ease-in-out">

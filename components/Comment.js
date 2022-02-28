@@ -1,7 +1,10 @@
 import dayjs from 'dayjs'
 import 'dayjs/locale/fr'
+import { useConnectedUserContext } from '/pages/_app'
 
-export default function Comments({ comments }) {
+export default function Comments({ comments, comment }) {
+  const { connectedUser, setConnectedUser } = useConnectedUserContext()
+
   if (comments && comments[0]) {
     console.log(comments)
     return (
@@ -11,7 +14,11 @@ export default function Comments({ comments }) {
             key={comment.id}
             displayName={comment.user.displayName}
             content={comment.content}
-            image={comment.user.profileImageUrl}
+            image={
+              comment.user.profileImageUrl === ''
+                ? '/images/default-pp.png'
+                : comment.user.profileImageUrl
+            }
             dateCreated={comment.dateCreated}
           />
         ))}
@@ -25,7 +32,8 @@ export default function Comments({ comments }) {
 function Comment({ displayName, content, image, dateCreated }) {
   return (
     <div className="flex">
-      <div className="flex-shrink-0 mr-4">
+      <div className="flex-shrink-0 mr-4 relative">
+        <span className="w-0.5 h-6 absolute left-5 top-10 bg-gray-500" />
         <img
           className="w-10 h-10 rounded-full"
           src={image}
@@ -34,12 +42,16 @@ function Comment({ displayName, content, image, dateCreated }) {
           alt=""
         />
       </div>
-      <div>
+      <div className="ml-3">
         <h4 className="font-semibold text-md">
-          {displayName}
-          <time className="ml-2 text-sm text-gray-400" dateTime={dateCreated}>
-            {dayjs(dateCreated).locale('fr').format('DD/MM/YY HH[h]mm')}
-          </time>
+          {displayName} ·{' '}
+          <span className="text-sm text-gray-500">
+            <time dateTime={dateCreated}>
+              {dayjs(dateCreated)
+                .locale('fr')
+                .format('DD MMMM YYYY [à] HH[h]mm')}
+            </time>
+          </span>
         </h4>
         <p>{content}</p>
       </div>

@@ -10,7 +10,7 @@ export default function Feed() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   return (
-    <div className="flex-grow border-l border-t min-h-[100vh] border-r border-black max-w-3xl raw1:ml-[73px] xl:ml-[370px]">
+    <div className="flex-grow w-[90%] mx-auto border-l border-t min-h-[100vh] border-r border-black max-w-3xl raw1:ml-[73px] xl:ml-[370px]">
       <div className=" items-center sm:justify-between py-2 px-3 sticky top-0  border-b border-black backdrop-filter backdrop-blur ">
         <h2 className="text-lg sm:text-xl font-bold pb-2 border-b border-black">
           Accueil

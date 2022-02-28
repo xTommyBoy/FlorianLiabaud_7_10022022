@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import createComment from '/api/createComment'
-import FormButton from './FormButton'
 import { mutate } from 'swr'
 import { useConnectedUserContext } from '/pages/_app'
 
@@ -29,7 +28,7 @@ export default function CommentInput({ currentPostId, commentsEndpoint }) {
   }
 
   return (
-    <form className="flex flex-grow mt-2" onSubmit={handleSubmit(onSubmit)}>
+    <form className="flex flex-grow mt-4" onSubmit={handleSubmit(onSubmit)}>
       <img
         referrerPolicy="no-referrer"
         className="w-11 h-11 rounded-full mr-4 border-2 border-gray-900"

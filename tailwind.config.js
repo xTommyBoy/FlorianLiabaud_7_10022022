@@ -31,6 +31,18 @@ module.exports = {
 
       '2xl': '1536px',
       // => @media (min-width: 1536px) { ... }
+
+      raw3: '1590px',
+      // => @media (min-width: 1590px) { ... }
+
+      raw4: '1750px',
+      // => @media (min-width: 1750px) { ... }
+
+      raw5: '1900px',
+      // => @media (min-width: 1900px) { ... }
+
+      hiddenWidget: '2000px',
+      // => @media (min-width: 2000px) { ... }
     },
   },
   variants: {

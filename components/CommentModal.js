@@ -63,7 +63,7 @@ export default function CommentModal({ comments, post, parentEvent }) {
                 <div className="flex px-4 pt-5 pb-2.5 sm:px-6 bg-white rounded-b-2xl shadow-xl">
                   <div className="w-full">
                     <div className="flex gap-x-3 relative">
-                      <span className="w-0.5 h-12 absolute left-5 top-11 bg-gray-500" />
+                      <span className="w-0.5 h-10 absolute left-5 top-11 bg-gray-500" />
 
                       <img
                         referrerPolicy="no-referrer"
@@ -100,10 +100,11 @@ export default function CommentModal({ comments, post, parentEvent }) {
                       {connectedUser?.role === 'admin' ||
                         connectedUser?.id === post.user?.id}
                     </div>
+
                     <div className="mt-7 flex w-full">
                       <Comment comments={comments} />
-                      <CommentInput currentPostId={post.id} />
                     </div>
+                    <CommentInput currentPostId={post.id} />
                   </div>
                 </div>
               </div>

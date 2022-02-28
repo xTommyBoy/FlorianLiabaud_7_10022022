@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { useRouter } from 'next/router'
+import { Router, useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { XCircleIcon, CheckCircleIcon } from '@heroicons/react/solid'
 import { useConnectedUserContext } from '/pages/_app'
@@ -40,8 +40,8 @@ export default function Profil() {
 
   async function deleteAction() {
     try {
-      await deleteUser(user.id)
-      mutate(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/users/${user.id}`)
+      await deleteUser(connectedUser?.id)
+      router.push('/')
     } catch (err) {
       console.log(err.message)
     }
