@@ -10,6 +10,7 @@ La base de donnée utilisée sera sous postgresql
 
 # Étape 1 :
 
+Télécharger le projet , l'extraire et sortir le main du dossier cloné
 Creer deux fichiers d'environnement (.env et .env_local) et les mettres dans le back et ajouter que env_local dans le front
 
 # Étape 2 :
