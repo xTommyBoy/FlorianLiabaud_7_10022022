@@ -20,7 +20,7 @@ Utiliser la commande `npm install` dans le dossier back et front pour tout insta
 # Étape 3 :
 
 Ajouter dans le fichier .env `DATABASE_URL="et collez la db ici`
-Ensuite dans le fichier .env.local ajouter : `NEXT_PUBLIC_DEMO_MODE=false` et `NEXT_PUBLIC_BACKEND_BASE_URL=http://localhost:3001/` à la seconde ligne
+Ensuite dans le fichier .env.local ajouter : `NEXT_PUBLIC_DEMO_MODE=false` et `NEXT_PUBLIC_BACKEND_BASE_URL=http://localhost:3001/back` à la seconde ligne
 Pour initialiser le back de NextJS
 
 # Dernière Étape : 
